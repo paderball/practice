@@ -29,11 +29,11 @@ public class Counter {
     return charToCount;
   }
 
-  private static List<Count> sortCharCounts(Map<Character, Integer> charToCount) {
-    List<Count> sortedCounts = new ArrayList<>(charToCount.size());
+  private static List<Count<Character>> sortCharCounts(Map<Character, Integer> charToCount) {
+    List<Count<Character>> sortedCounts = new ArrayList<>(charToCount.size());
 
     for (Entry<Character, Integer> entry : charToCount.entrySet()) {
-      sortedCounts.add(new Count(entry.getKey(), entry.getValue()));
+      sortedCounts.add(new Count<Character>(entry.getKey(), entry.getValue()));
     }
 
     Collections.sort(sortedCounts);
@@ -41,11 +41,11 @@ public class Counter {
     return sortedCounts;
   }
 
-  private static String formatCharCounts(List<Count> charCounts) {
+  private static String formatCharCounts(List<Count<Character>> charCounts) {
     StringBuilder builder = new StringBuilder();
 
-    for (Count charCount : charCounts) {
-      builder.append(charCount.getCharacter())
+    for (Count<Character> charCount : charCounts) {
+      builder.append(charCount.getKey())
              .append(":    ")
              .append(charCount.getCount())
              .append("\n");
@@ -63,23 +63,23 @@ public class Counter {
   public static void main(String [] args) {
     for (String text : args) {
       Map<Character, Integer> charToCount = getCharCounts(text);
-      List<Count> sortedCharCounts = sortCharCounts(charToCount);
+      List<Count<Character>> sortedCharCounts = sortCharCounts(charToCount);
       String formattedCounts = formatCharCounts(sortedCharCounts);
       display(text, formattedCounts);
     }
   }
 
-  static class Count implements Comparable<Count> {
-    private char character;
+  static class Count<T extends Comparable<T>> implements Comparable<Count<T>> {
+    private T key;
     private int count;
 
-    public Count (char character, int count) {
-      this.character = character;
+    public Count (T key, int count) {
+      this.key = key;
       this.count = count;
     }
 
-    public char getCharacter() {
-      return character;
+    public T getKey() {
+      return key;
     }
 
     public int getCount() {
@@ -87,13 +87,13 @@ public class Counter {
     }
 
     @Override
-    public int compareTo(Count o) {
+    public int compareTo(Count<T> o) {
       int countDiff = o.getCount() - count;
       if (countDiff != 0) {
         return countDiff;
       }
 
-      return o.getCharacter() - character;
+      return key.compareTo(o.getKey());
     }
   }
 }

@@ -13,16 +13,16 @@ public class CounterTest {
   public void getCharCountsWithNull() {
     Map<Character, Integer> charCounts = Counter.getCharCounts(null);
 
-    assertNotNull(charCounts);
-    assertEquals(0, charCounts.size());
+    assertNotNull("Null argument should return an empty Map", charCounts);
+    assertEquals("Null argument should return an empty Map", 0, charCounts.size());
   }
 
   @Test
   public void getCharCountsWithEmptyString() {
     Map<Character, Integer> charCounts = Counter.getCharCounts("");
 
-    assertNotNull(charCounts);
-    assertEquals(0, charCounts.size());
+    assertNotNull("Empty String argument should return an empty Map", charCounts);
+    assertEquals("Empty String argument should return an empty Map", 0, charCounts.size());
   }
 
   @Test
@@ -33,7 +33,7 @@ public class CounterTest {
     assertNotNull(charCounts);
     assertEquals(26, charCounts.size());
     for (int i = 0; i < alphabet.length(); ++i) {
-      assertEquals(1, charCounts.get(alphabet.charAt(i)).intValue());
+      assertEquals("Missing " + alphabet.charAt(i), 1, charCounts.get(alphabet.charAt(i)).intValue());
     }
   }
 

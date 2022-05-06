@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Counter {
-  private static Map<Character, Integer> getCharCounts(String text) {
+  public static Map<Character, Integer> getCharCounts(String text) {
     Map<Character, Integer> charToCount = new HashMap<>();
 
     if (text == null || text.length() == 0) {

@@ -8,32 +8,31 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Counter {
-  public static Map<Character, Integer> getCharCounts(String text) {
-    Map<Character, Integer> charToCount = new HashMap<>();
+  public static <T> Map<T, Integer> getCounts(List<T> data) {
+    Map<T, Integer> charToCount = new HashMap<>();
 
-    if (text == null || text.length() == 0) {
+    if (data == null || data.size() == 0) {
       return charToCount;
     }
 
-    for (int i = 0; i < text.length(); ++i) {
-      char character = text.charAt(i);
-      Integer count = charToCount.get(character);
+    for (T datum : data) {
+      Integer count = charToCount.get(datum);
 
       if (count == null) {
-        charToCount.put(character, 1);
+        charToCount.put(datum, 1);
       } else {
-        charToCount.put(character, count + 1);
+        charToCount.put(datum, count + 1);
       }
     }
 
     return charToCount;
   }
 
-  private static List<Count<Character>> sortCharCounts(Map<Character, Integer> charToCount) {
-    List<Count<Character>> sortedCounts = new ArrayList<>(charToCount.size());
+  public static <T extends Comparable<T>> List<Count<T>> sortCounts(Map<T, Integer> dataCounts) {
+    List<Count<T>> sortedCounts = new ArrayList<>(dataCounts.size());
 
-    for (Entry<Character, Integer> entry : charToCount.entrySet()) {
-      sortedCounts.add(new Count<Character>(entry.getKey(), entry.getValue()));
+    for (Entry<T, Integer> entry : dataCounts.entrySet()) {
+      sortedCounts.add(new Count<T>(entry.getKey(), entry.getValue()));
     }
 
     Collections.sort(sortedCounts);
@@ -41,13 +40,13 @@ public class Counter {
     return sortedCounts;
   }
 
-  private static String formatCharCounts(List<Count<Character>> charCounts) {
+  public static <T extends Comparable<T>> String formatCharCounts(List<Count<T>> dataCounts) {
     StringBuilder builder = new StringBuilder();
 
-    for (Count<Character> charCount : charCounts) {
-      builder.append(charCount.getKey())
+    for (Count<T> count : dataCounts) {
+      builder.append(count.getKey())
              .append(":    ")
-             .append(charCount.getCount())
+             .append(count.getCount())
              .append("\n");
     }
 
@@ -60,10 +59,20 @@ public class Counter {
     System.out.println("=====================================================================================================================");
   }
 
+  public static List<Character> stringToChars(String text) {
+    ArrayList<Character> chars = new ArrayList<Character>(text.length());
+    for (char character : text.toCharArray()) {
+      chars.add(character);
+    }
+
+    return chars;
+  }
+
   public static void main(String [] args) {
     for (String text : args) {
-      Map<Character, Integer> charToCount = getCharCounts(text);
-      List<Count<Character>> sortedCharCounts = sortCharCounts(charToCount);
+      List<Character> chars = stringToChars(text);
+      Map<Character, Integer> charToCount = getCounts(chars);
+      List<Count<Character>> sortedCharCounts = sortCounts(charToCount);
       String formattedCounts = formatCharCounts(sortedCharCounts);
       display(text, formattedCounts);
     }

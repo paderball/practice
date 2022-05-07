@@ -9,23 +9,23 @@ import java.util.Map.Entry;
 
 public class Counter {
   public static <T> Map<T, Integer> getCounts(List<T> data) {
-    Map<T, Integer> charToCount = new HashMap<>();
+    Map<T, Integer> counts = new HashMap<>();
 
     if (data == null || data.size() == 0) {
-      return charToCount;
+      return counts;
     }
 
     for (T datum : data) {
-      Integer count = charToCount.get(datum);
+      Integer count = counts.get(datum);
 
       if (count == null) {
-        charToCount.put(datum, 1);
+        counts.put(datum, 1);
       } else {
-        charToCount.put(datum, count + 1);
+        counts.put(datum, count + 1);
       }
     }
 
-    return charToCount;
+    return counts;
   }
 
   public static <T extends Comparable<T>> List<Count<T>> sortCounts(Map<T, Integer> dataCounts) {
@@ -40,7 +40,7 @@ public class Counter {
     return sortedCounts;
   }
 
-  public static <T extends Comparable<T>> String formatCharCounts(List<Count<T>> dataCounts) {
+  public static <T extends Comparable<T>> String formatCounts(List<Count<T>> dataCounts) {
     StringBuilder builder = new StringBuilder();
 
     for (Count<T> count : dataCounts) {
@@ -71,9 +71,9 @@ public class Counter {
   public static void main(String [] args) {
     for (String text : args) {
       List<Character> chars = stringToChars(text);
-      Map<Character, Integer> charToCount = getCounts(chars);
-      List<Count<Character>> sortedCharCounts = sortCounts(charToCount);
-      String formattedCounts = formatCharCounts(sortedCharCounts);
+      Map<Character, Integer> counts = getCounts(chars);
+      List<Count<Character>> sortedCounts = sortCounts(counts);
+      String formattedCounts = formatCounts(sortedCounts);
       display(text, formattedCounts);
     }
   }
